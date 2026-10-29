@@ -1,29 +1,42 @@
 package com.mackentoch.beaconsandroid;
 
-import com.facebook.react.ReactPackage;
-import com.facebook.react.bridge.JavaScriptModule;
+import androidx.annotation.Nullable;
+
+import com.facebook.react.BaseReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.uimanager.ViewManager;
+import com.facebook.react.module.model.ReactModuleInfo;
+import com.facebook.react.module.model.ReactModuleInfoProvider;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class BeaconsAndroidPackage implements ReactPackage {
+public class BeaconsAndroidPackage extends BaseReactPackage {
 
-    @Override
-    public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        List<NativeModule> modules = new ArrayList<>();
-        modules.add(new BeaconsAndroidModule(reactContext));
-        return modules;
+  @Nullable
+  @Override
+  public NativeModule getModule(String name, ReactApplicationContext reactContext) {
+    if (name.equals(BeaconsAndroidModule.NAME)) {
+      return new BeaconsAndroidModule(reactContext);
     }
+    return null;
+  }
 
-    @Override
-    public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-        return new ArrayList<>();
-    }
-
-    public List<Class<? extends JavaScriptModule>> createJSModules() {
-        return new ArrayList<>();
-    }
+  @Override
+  public ReactModuleInfoProvider getReactModuleInfoProvider() {
+    return () -> {
+      Map<String, ReactModuleInfo> moduleInfos = new HashMap<>();
+      moduleInfos.put(
+          BeaconsAndroidModule.NAME,
+          new ReactModuleInfo(
+              BeaconsAndroidModule.NAME,
+              BeaconsAndroidModule.class.getName(),
+              false, // canOverrideExistingModule
+              false, // needsEagerInit
+              false, // isCxxModule
+              true // isTurboModule
+          ));
+      return moduleInfos;
+    };
+  }
 }

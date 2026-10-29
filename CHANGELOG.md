@@ -1,3 +1,11 @@
+# 2.0.0
+
+- **Breaking:** rewritten as a TurboModule (New Architecture only, React Native >= 0.82). No bridge/interop layer needed.
+- Same API on both platforms; events via `Beacons.BeaconsEventEmitter.addListener(name, cb)` (replaces `NativeEventEmitter` on iOS and `DeviceEventEmitter` on Android; returns a subscription with `remove()`).
+- Android: `BaseReactPackage`, AGP 8+/`namespace`, `react-android` dependency, regions with `major`/`minor` of `0` are no longer treated as unset.
+- iOS: ObjC++ module (`RNiBeacon.mm`), iOS 15.1+, `locationManagerDidChangeAuthorization:`.
+- `getAuthorizationStatus` returns a Promise (callback still accepted).
+
 
 ## 1.1.0 (COMING SOON)
 - iOS: add `allowsBackgroundLocationUpdates(allow: boolean)` to ensure monitoring even if app is killed or in background
