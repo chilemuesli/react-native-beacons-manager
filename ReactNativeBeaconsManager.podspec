@@ -1,13 +1,19 @@
+require "json"
+
+package = JSON.parse(File.read(File.join(__dir__, "package.json")))
+
 Pod::Spec.new do |s|
   s.name         = "ReactNativeBeaconsManager"
-  s.version      = "1.1.0"
-  s.summary      = "React-Native library for detecting beacons (iOS and Android)"
-  s.homepage     = "https://github.com/MacKentoch/react-native-beacons-manager#readme"
+  s.version      = package["version"]
+  s.summary      = package["description"]
+  s.homepage     = "https://github.com/chilemuesli/react-native-beacons-manager#readme"
   s.license      = { :type => "MIT" }
   s.authors      = { "" => "" }
-  s.platform     = :ios, "8.0"
-  s.source       = { :path => "." }
-  s.source_files = "ios", "ios/**/*.{h,m}"
+  s.platforms    = { :ios => "15.1" }
+  s.source       = { :git => "https://github.com/chilemuesli/react-native-beacons-manager.git", :tag => "v#{s.version}" }
+  s.source_files = "ios/RNiBeacon/RNiBeacon/**/*.{h,m,mm}"
+  s.frameworks   = "CoreLocation", "CoreBluetooth"
 
-  s.dependency 'React'
+  # Adds React-Core, codegen and TurboModule dependencies (New Architecture).
+  install_modules_dependencies(s)
 end

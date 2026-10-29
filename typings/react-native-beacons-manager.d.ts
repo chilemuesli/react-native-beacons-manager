@@ -14,7 +14,27 @@ declare module 'react-native-beacons-manager' {
     | 'notDetermined'
     | 'restricted';
 
+  export interface EventSubscription {
+    remove(): void;
+  }
+
+  /** Same events on iOS and Android (New Architecture TurboModule). */
+  export type BeaconsEventName =
+    | 'beaconsDidRange'
+    | 'regionDidEnter'
+    | 'regionDidExit'
+    | 'didDetermineState'
+    | 'authorizationStatusDidChange'
+    | 'beaconServiceConnected';
+
   class Beacons {
+    BeaconsEventEmitter: {
+      addListener(
+        eventName: BeaconsEventName,
+        listener: (event: any) => void
+      ): EventSubscription;
+    };
+
     ///////////////////////////////////////////////////////
     // iOS only
     ///////////////////////////////////////////////////////
@@ -28,8 +48,8 @@ declare module 'react-native-beacons-manager' {
     ): void;
 
     getAuthorizationStatus(
-      callback: (status: AuthorizationStatus) => any
-    ): any;
+      callback?: (status: AuthorizationStatus) => any
+    ): Promise<AuthorizationStatus>;
 
     startUpdatingLocation(): void;
 
